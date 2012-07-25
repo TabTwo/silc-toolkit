@@ -1,0 +1,228 @@
+commit 8cb801cf6482666818e721822ce81c81ec818908
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Aug 7 14:48:46 2009 +0300
+
+    More string format fixes in silcd and client libary
+
+commit 97fa30748eed3f4248bd213ae3ab9e742fd36c71
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sun Aug 2 10:11:20 2009 +0300
+
+    configure: changed AC_PROG_LIBTOOL order to fix disabling shared libs
+
+commit 35b767c59f0741fc58f0c4d07ccd8d2ce4134a35
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Jul 31 22:38:06 2009 +0300
+
+    configure: check threads support in OpenBSD.
+
+commit 1598b3a51b51a434037461ccd35487bc0df3137c
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Jul 31 22:32:57 2009 +0300
+
+    Fixed string format vulnerability in client entry handling.
+    
+    Reported and patch provided by William Cummings.
+
+commit cb95ad2d35f1796567fbebc9e848c10d4bd2e7b9
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon Jun 8 08:58:35 2009 +0300
+
+    silcd: Fixed IDENTIFY command reply handling for channels
+    
+    The IDENTIFY comamnd reply for channels were broken because the channel ID
+    parsing always failed.  This would cause issues like USERS command not
+    returning the users for a channel, making the channel appear empty, in some
+    specific cases.
+    
+    Fixed also the USERS command reply to not query the channel information
+    from router more than once.
+
+commit 59f343801620f8b02933d419efb111d5928b11b8
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon Jun 8 08:03:02 2009 +0300
+
+    silcd: Abort active protocols in DETACH command
+    
+    When detaching client, which results into closing of the actual connection
+    it is important to abort any active protocols, such as rekeys, because
+    they cannot be completed with detached clients.
+
+commit aef788f086376673eef0939aa3ef74810318d5f3
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sun Jun 7 20:04:16 2009 +0300
+
+    silcd: Added SKR to debug levels
+
+commit 3749c6ee56f1df40934bab1aae6baeb334206b69
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Tue Jun 2 08:01:25 2009 +0300
+
+    silcd: Save debug message in ring buffer
+    
+    In debug version save 3000 last debug messages in ring buffer so that they
+    are available in core files.
+
+commit 7a10e386467421bfac0ba425289250e61e566ce0
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon May 25 20:44:07 2009 +0300
+
+    configure.ad: Fixed configure to support new autoconf
+
+commit 7d0cb0875ea6adaac843bc8d7ee1d74666c99afd
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon May 25 20:43:22 2009 +0300
+
+    silcd: fixed Deny hostname comparison
+    
+    Use the silc_strin_match instead of silc_string_compare to match
+    hostnames and IP addresses in silcd.conf.  Fixed for Deny but changed
+    in all the other places as well.
+
+commit a576439040a03e4b98b96b5834e504da00ced6e5
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Wed Mar 11 17:04:20 2009 +0200
+
+    Added proper copyright notices to COPYING and BSD files
+
+commit ae6052d215699d28c10af64da8066b7b5175f58d
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Tue Mar 3 08:02:27 2009 +0200
+
+    silcd: IDENTIFY command reply didn't save userinfo correctly
+    
+    The IDENTIFY command reply didn't duplicate the userinfo when adding
+    new client thus causing weird crashes later when freeing the userinfo.
+
+commit 2e7268cde1710b4901e6db52c0868bd597b88dbc
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Tue Mar 3 07:52:58 2009 +0200
+
+    silcd: IDENTIFY command reply didn't save client correctly
+    
+    The IDENTIFY command reply added sometimes new client without
+    duplicating the nickname of the client thus causing odd crashes later
+    when trying to free the nickname.
+
+commit 226f97eb5ab714b58bfb2cba0cb50d025884bb13
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Feb 27 16:22:36 2009 +0200
+
+    PacketEngine: Don't free underlaying stream in packet stream create error
+    
+    If packet stream creation failed it freed the stream given as argument.
+    This is wrong.  It is the caller's responsibility to free it if the
+    packet stream creation failed.
+
+commit f17f0003337914b58ced7b318ce8455ffc2a9e51
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Feb 27 16:16:11 2009 +0200
+
+    silcd: handle SIGNOFF notify for local clients correctly
+    
+    In some rare cases router can send SIGNOFF notify to server for a client
+    that is locally connected to the server.  The server didn't close the
+    client's connection but freed the entry.  This later caused various
+    different crashes when accessing the freed the client.
+
+commit 888990de6ce49969c38b46385644f946dabab5d1
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Thu Feb 26 08:07:56 2009 +0200
+
+    Fixed unsigned <-> signed char issues
+
+commit dc0e9d3b61c1adab40d23e48486f857f14bdcbd8
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Thu Feb 26 08:06:02 2009 +0200
+
+    SKE: When failure is received mark SKE always failed
+    
+    Mark the SKE failed even if we don't receive error from remote.  Fixes
+    crash where the callback is called back to application without valid
+    key material and without error status.
+
+commit 4993b03b9ccd85373a60f9cf5c8d99a865898fda
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat Jan 17 11:42:07 2009 +0200
+
+    silcd: increment stat.clients statistics whenever adding new client
+    
+    When new client is added to server the stat.clients must always be
+    incremented.  Otherwise it is possible to go under zero when removing
+    the clients by server.
+
+commit 454d63a3ea0c954f9d40b9e7725fd9ea48503f4c
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Thu Jan 15 12:21:23 2009 +0200
+
+    silcd: do not create dynamic connections on non-dynamic server
+
+commit c0a3e19503062eb3aab8335d97e27e348595b81d
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon Jan 12 09:03:41 2009 +0200
+
+    Added scripts/release
+
+commit 9504fdcc21339629d03619684f3ffdc0601e0a7e
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat Jan 10 18:08:27 2009 +0200
+
+    Libtool 2.x support
+
+commit 378788d463ae896c05cf77f0b39015bffc69a0ae
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat Jan 10 11:54:57 2009 +0200
+
+    Updated release documentation.
+
+commit e5221dc52c3b68df49daac95218d9d229450f2d3
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Jan 9 10:14:12 2009 +0200
+
+    Fixed operation context NULLin in disconnect.
+
+commit 7e4757a2ae33adb2cb0dbe268cd9396e12c425b5
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Fri Jan 9 07:33:55 2009 +0200
+
+    Take stream reference correctly in packet error callback
+    
+    Reverted commit e5e28835f5f0c4c5b52f0449e75b7f1c03a37548
+
+commit e5e28835f5f0c4c5b52f0449e75b7f1c03a37548
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Thu Jan 8 22:32:47 2009 +0200
+
+    Remove possible packet error timeouts in EOS callback
+
+commit 9a3eb96ee8950fbce03b1e115e656960be189dfc
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Thu Jan 8 21:58:39 2009 +0200
+
+    Added debug logs for updating stat.clients value
+
+ README.DIST                   |   69 +++++++++++++++++++++-------------------
+ apps/irssi/configure.in       |   23 +++----------
+ apps/silcd/command.c          |   19 +++++++++--
+ apps/silcd/command_reply.c    |   21 ++++++++++--
+ apps/silcd/command_reply.h    |    1 +
+ apps/silcd/packet_receive.c   |   32 ++++++++++++++++++-
+ apps/silcd/server.c           |   44 ++++++++++++++++++++++---
+ apps/silcd/server_internal.h  |    3 +-
+ apps/silcd/server_query.c     |    7 ++++
+ apps/silcd/server_util.c      |   13 ++++++--
+ apps/silcd/serverconfig.c     |   16 +++++-----
+ apps/silcd/silcd.c            |   47 ++++++++++++++++++++++------
+ configure.ad                  |   19 ++++++-----
+ distdir/BSD                   |    3 ++
+ distdir/TOOLKIT               |    4 ++
+ distdir/autodist.conf         |    2 +-
+ lib/silcclient/client_entry.c |   10 +++---
+ lib/silcclient/command.c      |    8 ++--
+ lib/silccore/silcpacket.c     |    8 ++++-
+ lib/silcske/silcske.c         |    4 +-
+ lib/silcutil/silcconfig.c     |   45 ++++++++++++++------------
+ lib/silcutil/silcutil.c       |    2 +-
+ scripts/release               |    8 +++++
+ 23 files changed, 279 insertions(+), 129 deletions(-)
+ create mode 100644 scripts/release
